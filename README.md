@@ -61,3 +61,6 @@ https://github.com/Azure/azure-cosmos-dotnet-v2/issues/197
 
 DateTimeOffsets get converted to local time when deserialized
 https://github.com/Azure/azure-cosmos-dotnet-v2/issues/292
+
+Add DateTimeOffset support 
+https://feedback.azure.com/forums/263030-azure-cosmos-db/suggestions/16838656-add-datetimeoffset-support
