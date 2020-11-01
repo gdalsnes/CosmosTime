@@ -25,7 +25,7 @@ you must use UtcOffsetTimeCosmosDbJsonConverter that will format like this:
  "offsetMins": 30
 }  
 
-Some collected links with problems Newtonsoft\CosmosDb:
+Some collected links with info\problems about times in Newtonsoft\CosmosDb:
 
 https://stackoverflow.com/questions/63444977/convert-string-to-datetime-in-cosmos-db
 
@@ -64,3 +64,6 @@ https://github.com/Azure/azure-cosmos-dotnet-v2/issues/292
 
 Add DateTimeOffset support 
 https://feedback.azure.com/forums/263030-azure-cosmos-db/suggestions/16838656-add-datetimeoffset-support
+
+Sorting and filtering by DateTime in Azure Cosmos DB SQL Queries
+https://codingazure.net/?p=62
