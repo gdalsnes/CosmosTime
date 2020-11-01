@@ -25,3 +25,8 @@ you must use UtcOffsetTimeCosmosDbJsonConverter that will format like this:
  "offsetMins": 30
 }  
 
+Some problems with Newtonsoft\Cosmos:
+
+https://stackoverflow.com/questions/63444977/convert-string-to-datetime-in-cosmos-db
+
+https://github.com/JamesNK/Newtonsoft.Json/issues/862
