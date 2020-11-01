@@ -52,3 +52,12 @@ https://stackoverflow.com/questions/48304478/unable-to-save-property-with-value-
 
 [BUG] Date-like metadata is being parsed and serialized
 https://github.com/Azure/azure-libraries-for-net/issues/1126
+
+DateTimeOffset ignores offset during deserialisation, uses LOCAL TIME ZONE offset
+https://github.com/Azure/azure-cosmos-dotnet-v2/issues/235
+
+Saving and reading DateTimeOffset in DocumentDB
+https://github.com/Azure/azure-cosmos-dotnet-v2/issues/197
+
+DateTimeOffsets get converted to local time when deserialized
+https://github.com/Azure/azure-cosmos-dotnet-v2/issues/292
