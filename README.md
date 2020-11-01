@@ -25,8 +25,30 @@ you must use UtcOffsetTimeCosmosDbJsonConverter that will format like this:
  "offsetMins": 30
 }  
 
-Some problems with Newtonsoft\Cosmos:
+Some collected links with problems Newtonsoft\CosmosDb:
 
 https://stackoverflow.com/questions/63444977/convert-string-to-datetime-in-cosmos-db
 
+Json.NET interprets and modifies ISO dates when deserializing to JObject (DateParseHandling.None)
 https://github.com/JamesNK/Newtonsoft.Json/issues/862
+
+Default serialization of DateTime is not sortable
+https://github.com/Azure/azure-cosmos-dotnet-v3/issues/1468
+
+Most applications can use the default string representation for DateTime?
+https://github.com/MicrosoftDocs/azure-docs/issues/65079
+
+The docs seem to be completely unaware of all the problems:
+https://docs.microsoft.com/en-us/azure/cosmos-db/working-with-dates
+
+Please specify DateTime conversion fully
+https://github.com/MicrosoftDocs/azure-docs/issues/19284
+
+LINQ not honoring JsonSerializerSettings
+https://github.com/Azure/azure-cosmos-dotnet-v2/issues/351
+
+Unable to save property with value that looks like a date in Azure Cosmos DB Graph (Gremlin)
+https://stackoverflow.com/questions/48304478/unable-to-save-property-with-value-that-looks-like-a-date-in-azure-cosmos-db-gra
+
+[BUG] Date-like metadata is being parsed and serialized
+https://github.com/Azure/azure-libraries-for-net/issues/1126
