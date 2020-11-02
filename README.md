@@ -1,5 +1,7 @@
 # CosmosTime
-A restricted set of time structs, UtcTime and UtcOffsetTime, trying to fix some of the problems with DateTime\DateTimeOffset and be nice to CosmosDB that require a specific fixed length format. Point is to only support only ISO 8601 with CultureInfo.InvariantCulture for parse and formatting.  
+A restricted set of time structs, UtcTime and UtcOffsetTime, trying to fix some of the problems with DateTime\DateTimeOffset and be nice to CosmosDB that require a specific fixed length format ("yyyy-MM-ddTHH:mm:ss.fffffffZ") for range queries to work. New date and time system functions in Azure Cosmos DB return this fixed length format (but unfortunately they allow parsing various length formats with\without Z, opening up for hiding bugs).
+
+Point also to only support only ISO 8601 with CultureInfo.InvariantCulture for parse and formatting.  
 
 Also a goal is to make parsing and formatting more restricted:  
 
