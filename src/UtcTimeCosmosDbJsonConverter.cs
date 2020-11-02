@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace CosmosTime
+namespace CosmosTime.Serialization.JsonNet
 {
 	/// <summary>
-	/// Format\parse fixed length "yyyy-MM-ddTHH:mm:ss.fffffffZ"
+	/// Format\parse fixed length utc "yyyy-MM-ddTHH:mm:ss.fffffffZ"
 	/// </summary>
 	public class UtcTimeCosmosDbJsonConverter : JsonConverter<UtcTime>
 	{
@@ -25,7 +25,7 @@ namespace CosmosTime
 
 			var utc = (UtcTime)value;
 
-			writer.WriteValue(utc.ToCosmosDbString());
+			writer.WriteValue(utc.ToCosmosDb());
 		}
 	}
 }

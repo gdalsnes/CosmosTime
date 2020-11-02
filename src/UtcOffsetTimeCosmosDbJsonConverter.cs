@@ -4,13 +4,13 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace CosmosTime
+namespace CosmosTime.Serialization.JsonNet
 {
 	/// <summary>
 	/// Format\parse composite format 
 	/// { 
-	///   "time": "yyyy-MM-ddTHH:mm:ss.fffffffZ", // fixed length
-	///   "offsetMins": {mins}
+	///   "time": "yyyy-MM-ddTHH:mm:ss.fffffffZ", // fixed length utc
+	///   "offsetMins": -30
 	/// }
 	/// </summary>
 	public class UtcOffsetTimeCosmosDbJsonConverter : JsonConverter<UtcOffsetTime>
@@ -34,7 +34,7 @@ namespace CosmosTime
 			writer.WriteStartObject();
 
 			writer.WritePropertyName("time");
-			writer.WriteValue(rr.Utc.ToCosmosDbString());
+			writer.WriteValue(rr.UtcTime.ToCosmosDb());
 
 			writer.WritePropertyName("offsetMins");
 			writer.WriteValue(rr.OffsetMins);

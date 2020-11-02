@@ -13,7 +13,6 @@ namespace CosmosTime
 			return utc.Value.UtcDateTime;
 		}
 
-
 		public static UtcTime ToUtcTime(this DateTime dt)
 		{
 			return new UtcTime(dt.ToUniversalTime());

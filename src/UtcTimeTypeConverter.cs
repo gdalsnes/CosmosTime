@@ -18,7 +18,7 @@ namespace CosmosTime
 		{
 			if (value is string str)
 			{
-				if (UtcTime.TryParseUtc(str, out var ut))
+				if (UtcTime.TryParse(str, out var ut))
 					return ut;
 			}
 
@@ -30,7 +30,7 @@ namespace CosmosTime
 			if (destinationType == typeof(string))
 			{
 				var utc = (UtcTime)value;
-				return utc.ToUtcString(); // variable len
+				return utc.ToString(); // variable len
 			}
 
 			return base.ConvertTo(context, culture, value, destinationType);

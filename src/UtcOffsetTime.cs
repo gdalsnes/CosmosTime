@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace CosmosTime
@@ -9,18 +10,60 @@ namespace CosmosTime
 		UtcTime _utc;
 		short _offsetMins;
 
-		//DateTimeOffset _dto;
-
 		public static UtcOffsetTime Now => DateTimeOffset.Now.ToUtcOffsetTime();
 
-		public UtcTime Utc => _utc;// _dto.UtcDateTime.ToUtcTime();
+		public UtcTime UtcTime => _utc;
+
+		public static readonly UtcOffsetTime MinValue = DateTimeOffset.MinValue.ToUtcOffsetTime();
+		public static readonly UtcOffsetTime MaxValue = DateTimeOffset.MaxValue.ToUtcOffsetTime();
 
 		/// <summary>
 		/// Offset from Utc
 		/// </summary>
-		public int OffsetMins => _offsetMins;// (int)_dto.Offset.TotalMinutes;
+		public int OffsetMins => _offsetMins;
 
-		// PArse: allow inly local+offset
+		public static UtcOffsetTime Parse(string str)
+		{
+			if (TryParse(str, out var ut))
+				return ut;
+			throw new FormatException("not utc or local[+-]offset");
+		}
+
+		public static bool TryParse(string utcOffsetString, out UtcOffsetTime uo)
+		{
+			/* 2020-10-27T10:59:54Z -> offset 0
+			 * 2020-10-27T10:59:54 -> local time (BAD) Will not allow this... must check manually
+			 * 2020-10-27T10:59:54+00:10  -> offset 10min
+
+			 * 
+			 * DateTimeStyles.AdjustToUniversal and DateTimeStyles.RoundtripKind are very similar in a way, and mutually exlusive (cannot be used together)
+			 * */
+
+			// offset local time(BAD) Will not allow this... must check manually
+			Func<string, bool> endsWithZ = (str) => str.Length > 0 && str[str.Length - 1] == 'Z';
+			Func<string, bool> hasOffset = (str) =>
+			{
+				for (int i = 2; i <= 6 && i <= str.Length; i++)
+				{
+					var c = str[str.Length - i];
+					if (c == '-' || c == '+')
+						return true;
+				}
+				return false;
+			};
+
+			// DateTimeStyles.RoundtripKind seem to have no effect on DateTimeOffset. but set it anyways
+			if (endsWithZ(utcOffsetString) || hasOffset(utcOffsetString))
+				if (DateTimeOffset.TryParse(utcOffsetString, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out var dto))
+				{
+					uo = dto.ToUtcOffsetTime();
+					return true;
+				}
+
+			uo = UtcOffsetTime.MinValue;
+			return false;
+		}
+
 
 		/// <summary>
 		/// Problem: dto may be messed up already, but we cant do anything about that......
@@ -36,7 +79,6 @@ namespace CosmosTime
 		{
 			_utc = utcs;
 
-			// [+-]14h
 			if (offsetMinutes < -840 || offsetMinutes > 840)
 				throw new ArgumentException("offset can be max [+-] 14 hours");
 
@@ -44,10 +86,10 @@ namespace CosmosTime
 		}
 
 		/// <summary>
-		/// Variable length
+		/// Variable length utc[+-]offset
 		/// </summary>
 		/// <returns></returns>
-		public string ToUtcOffsetString()
+		public override string ToString()
 		{
 			var local = _utc.AddMinutes(_offsetMins);
 
@@ -58,28 +100,13 @@ namespace CosmosTime
 			if (neg)
 				mins *= -1;
 
-
-
 			var strNoZ = local.ToString(UtcTime.VariableLengthFormatUtcWithoutZ);
 
 			var off = string.Format("{0:00}:{1:00}", mins / 60, mins % 60);
 			var res = $"{strNoZ}{(neg ? '-' : '+')}{off}";
 
-			//			if (res.Length != 33)
-			//			throw new Exception("not 33 chars");
-
 			return res;
-			//.ToString()..UtcDateTime.ToString("o", CultureInfo.InvariantCulture);
 		}
-
-		/// <summary>
-		/// minutes
-		/// </summary>
-
-
-		public override string ToString() => ToUtcOffsetString();
-
-		// TODO: parse time+offset?
 
 		public static UtcOffsetTime ParseCosmosDb(string utc, short offsetMinutes)
 		{
@@ -94,23 +121,13 @@ namespace CosmosTime
 			return new DateTimeOffset(DateTime.SpecifyKind(local, DateTimeKind.Local), TimeSpan.FromMinutes(OffsetMins));
 		}
 
-		public override int GetHashCode()
-		{
-			return _utc.GetHashCode();
-		}
-
+		public override int GetHashCode() => _utc.GetHashCode();
+		
 		public override bool Equals(object obj) => obj is UtcOffsetTime other && Equals(other);
 
-
-		public bool Equals(UtcOffsetTime other)
-		{
-			return this._utc == other._utc;// && this._offsetMins == other._offsetMins;
-		}
-
-		public int CompareTo(UtcOffsetTime other)
-		{
-			return this._utc.CompareTo(other._utc);
-		}
+		public bool Equals(UtcOffsetTime other) => this._utc == other._utc;
+		
+		public int CompareTo(UtcOffsetTime other) => this._utc.CompareTo(other._utc);
 
 		int IComparable.CompareTo(object obj)
 		{
@@ -121,19 +138,8 @@ namespace CosmosTime
 			return CompareTo((UtcOffsetTime)obj);
 		}
 
-		public static bool operator ==(UtcOffsetTime a, UtcOffsetTime b)
-		{
-			return a._utc == b._utc;// && a._offsetMins == b._offsetMins;
-		}
-		public static bool operator !=(UtcOffsetTime a, UtcOffsetTime b)
-		{
-			return a._utc != b._utc;// || a._offsetMins != b._offsetMins;
-		}
-
-
-		//public object ToString(string v)
-		//{
-		//	return _dto.ToString(v, CultureInfo.InvariantCulture);
-		//}
+		public static bool operator ==(UtcOffsetTime a, UtcOffsetTime b) => a._utc == b._utc;
+		public static bool operator !=(UtcOffsetTime a, UtcOffsetTime b) => a._utc != b._utc;
+		
 	}
 }
