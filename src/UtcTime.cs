@@ -53,7 +53,7 @@ namespace CosmosTime
 			return _utc.ToString(VariableLengthFormatUtc, CultureInfo.InvariantCulture);
 		}
 
-		// PArse: allow inly UTC or localk+offset
+		// Parse: allow inly UTC or local+offset
 
 		public UtcTime(DateTime utcTime)
 		{
