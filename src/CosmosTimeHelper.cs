@@ -6,13 +6,6 @@ namespace CosmosTime
 {
 	public static class CosmosTimeHelper
 	{
-		public static DateTime? ToUtcDateTime(this UtcTime? utc)
-		{
-			if (utc == null)
-				return null;
-			return utc.Value.UtcDateTime;
-		}
-
 		public static UtcTime ToUtcTime(this DateTime dt)
 		{
 			return new UtcTime(dt.ToUniversalTime());
@@ -30,6 +23,18 @@ namespace CosmosTime
 			return new UtcOffsetTime(dto);
 		}
 
+		public static UtcOffsetTime? ToUtcOffsetTime(this DateTimeOffset? dto)
+		{
+			if (dto == null)
+				return null;
+			return new UtcOffsetTime(dto.Value);
+		}
 
+		public static DateTime? ToUtcDateTime(this UtcTime? utc)
+		{
+			if (utc == null)
+				return null;
+			return utc.Value.UtcDateTime;
+		}
 	}
 }

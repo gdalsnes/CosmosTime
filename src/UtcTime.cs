@@ -92,20 +92,20 @@ namespace CosmosTime
 		}
 
 		public static TimeSpan operator -(UtcTime a, UtcTime b) => a._utc - b._utc;
+		public static UtcTime operator -(UtcTime d, TimeSpan t) => (d._utc - t).ToUtcTime();
+		public static UtcTime operator +(UtcTime d, TimeSpan t) => (d._utc + t).ToUtcTime();
 
 		public static bool operator ==(UtcTime a, UtcTime b) => a._utc == b._utc;
-
 		public static bool operator !=(UtcTime a, UtcTime b) => a._utc != b._utc;
-
 		public static bool operator <(UtcTime a, UtcTime b) => a._utc < b._utc;
-
 		public static bool operator >(UtcTime a, UtcTime b) => a._utc > b._utc;
-
 		public static bool operator <=(UtcTime a, UtcTime b) => a._utc <= b._utc;
-
 		public static bool operator >=(UtcTime a, UtcTime b) => a._utc >= b._utc;
 
-		public UtcTime AddSeconds(double v) => _utc.AddSeconds(v).ToUtcTime();
+		public UtcTime AddSeconds(double sec) => _utc.AddSeconds(sec).ToUtcTime();
+		public UtcTime AddMinutes(double min) => _utc.AddMinutes(min).ToUtcTime();
+
+		
 
 		// kind of both is utc
 		public bool Equals(UtcTime other) => _utc.Equals(other._utc);
@@ -124,10 +124,6 @@ namespace CosmosTime
 			}
 			return CompareTo((UtcTime)obj);
 		}
-
-		public UtcTime AddMinutes(double offset) => _utc.AddMinutes(offset).ToUtcTime();
-
-
 
 		public static UtcTime ParseCosmosDb(string utc)
 		{

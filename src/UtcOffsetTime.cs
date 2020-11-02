@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Text;
 
 namespace CosmosTime
 {
+
+	[TypeConverter(typeof(UtcOffsetTimeTypeConverter))]
 	public struct UtcOffsetTime : IEquatable<UtcOffsetTime>, IComparable<UtcOffsetTime>, IComparable
 	{
 		UtcTime _utc;
@@ -80,7 +83,7 @@ namespace CosmosTime
 			_utc = utcs;
 
 			if (offsetMinutes < -840 || offsetMinutes > 840)
-				throw new ArgumentException("offset can be max [+-] 14 hours");
+				throw new ArgumentException("offset must be max [+-] 14 hours");
 
 			_offsetMins = offsetMinutes;
 		}
@@ -114,12 +117,16 @@ namespace CosmosTime
 			return new UtcOffsetTime(utcs, offsetMinutes);
 		}
 
-		internal DateTimeOffset ToDateTimeOffset()
+		public DateTimeOffset ToDateTimeOffset()
 		{
 			var local = _utc.AddMinutes(_offsetMins).UtcDateTime;
 
-			return new DateTimeOffset(DateTime.SpecifyKind(local, DateTimeKind.Local), TimeSpan.FromMinutes(OffsetMins));
+			// can not use Local kind as DTO will validate the offset against current local offset...
+			// "DateTimeOffset Error: UTC offset of local dateTime does not match the offset argument"
+			return new DateTimeOffset(DateTime.SpecifyKind(local, DateTimeKind.Unspecified), TimeSpan.FromMinutes(_offsetMins));
 		}
+
+		public DateTime ToLocalTime() => _utc.ToLocalTime();
 
 		public override int GetHashCode() => _utc.GetHashCode();
 		
@@ -138,8 +145,16 @@ namespace CosmosTime
 			return CompareTo((UtcOffsetTime)obj);
 		}
 
+		public static UtcOffsetTime operator +(UtcOffsetTime d, TimeSpan t) => new UtcOffsetTime(d._utc + t, d._offsetMins); 
+		public static UtcOffsetTime operator -(UtcOffsetTime d, TimeSpan t) => new UtcOffsetTime(d._utc - t, d._offsetMins);
+		public static TimeSpan operator -(UtcOffsetTime a, UtcOffsetTime b) => a._utc - b._utc;
+
 		public static bool operator ==(UtcOffsetTime a, UtcOffsetTime b) => a._utc == b._utc;
 		public static bool operator !=(UtcOffsetTime a, UtcOffsetTime b) => a._utc != b._utc;
-		
+		public static bool operator <(UtcOffsetTime a, UtcOffsetTime b) => a._utc < b._utc;
+		public static bool operator >(UtcOffsetTime a, UtcOffsetTime b) => a._utc > b._utc;
+		public static bool operator <=(UtcOffsetTime a, UtcOffsetTime b) => a._utc <= b._utc;
+		public static bool operator >=(UtcOffsetTime a, UtcOffsetTime b) => a._utc >= b._utc;
+
 	}
 }
