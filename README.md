@@ -67,3 +67,6 @@ https://feedback.azure.com/forums/263030-azure-cosmos-db/suggestions/16838656-ad
 
 Sorting and filtering by DateTime in Azure Cosmos DB SQL Queries
 https://codingazure.net/?p=62
+
+BulkImportAsync does not respect JsonSerializerSettings
+https://github.com/Azure/azure-cosmos-dotnet-v2/issues/601
