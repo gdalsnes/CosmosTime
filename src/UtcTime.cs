@@ -53,8 +53,6 @@ namespace CosmosTime
 			return _utc.ToString(VariableLengthFormatUtc, CultureInfo.InvariantCulture);
 		}
 
-		// Parse: allow inly UTC or local+offset
-
 		public UtcTime(DateTime utcTime)
 		{
 			if (utcTime.Kind != DateTimeKind.Utc)
@@ -104,8 +102,8 @@ namespace CosmosTime
 
 		public UtcTime AddSeconds(double sec) => _utc.AddSeconds(sec).ToUtcTime();
 		public UtcTime AddMinutes(double min) => _utc.AddMinutes(min).ToUtcTime();
-
-		
+		public UtcTime AddHours(double h) => _utc.AddHours(h).ToUtcTime();
+		public UtcTime AddDays(double d) => _utc.AddDays(d).ToUtcTime();
 
 		// kind of both is utc
 		public bool Equals(UtcTime other) => _utc.Equals(other._utc);
@@ -136,6 +134,11 @@ namespace CosmosTime
 			return new UtcTime(dt);
 		}
 
+		/// <summary>
+		/// Only allows {utc}Z or {local}[+-]{offset}
+		/// </summary>
+		/// <param name="str"></param>
+		/// <returns></returns>
 		public static UtcTime Parse(string str)
 		{
 			if (TryParse(str, out var ut))

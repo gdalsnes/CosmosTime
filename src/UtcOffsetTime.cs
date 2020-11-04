@@ -13,7 +13,11 @@ namespace CosmosTime
 		UtcTime _utc;
 		short _offsetMins;
 
-		public static UtcOffsetTime Now => DateTimeOffset.Now.ToUtcOffsetTime();
+		/// <summary>
+		/// It make little sense to call this on a server, it will capture the server offset to utc, and that make little sense.
+		/// So rename to NowLocal\LocalNow
+		/// </summary>
+		public static UtcOffsetTime LocalNow => DateTimeOffset.Now.ToUtcOffsetTime();
 
 		public UtcTime UtcTime => _utc;
 
