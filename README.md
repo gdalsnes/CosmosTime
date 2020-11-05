@@ -81,3 +81,9 @@ https://stackoverflow.com/questions/63112044/bug-in-datetime-handling-of-cosmos-
 
 LINQ queries with DateTime values are broken
 https://github.com/Azure/azure-cosmos-dotnet-v3/issues/1732
+
+Formatting date in Linq-to-Entities query causes exception
+https://stackoverflow.com/questions/5839388/formatting-date-in-linq-to-entities-query-causes-exception
+
+Datetime fields - ISO vs non-ISO - How does the behaviour of Cosmos DB change? 
+https://github.com/MicrosoftDocs/azure-docs/issues/52598
