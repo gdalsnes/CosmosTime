@@ -76,5 +76,8 @@ https://github.com/Azure/azure-cosmos-dotnet-v2/issues/601
 Times displayed incorrectly (CosmosDbExplorer)
 https://github.com/sachabruttin/CosmosDbExplorer/issues/44
 
-Formatting date in Linq-to-Entities query causes exception (linq query generation)
+Bug in DateTime handling of Cosmos DB DocumentClient (linq query generation)
 https://stackoverflow.com/questions/63112044/bug-in-datetime-handling-of-cosmos-db-documentclient
+
+LINQ queries with DateTime values are broken
+https://github.com/Azure/azure-cosmos-dotnet-v3/issues/1732
