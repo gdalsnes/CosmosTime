@@ -21,7 +21,7 @@ namespace CosmosTime
 
 		public UtcTime UtcTime => _utc;
 
-		public static readonly UtcOffsetTime MinValue = DateTimeOffset.MinValue.ToUtcOffsetTime();
+		public static readonly UtcOffsetTime MinValue;// = DateTimeOffset.MinValue.ToUtcOffsetTime();
 		public static readonly UtcOffsetTime MaxValue = DateTimeOffset.MaxValue.ToUtcOffsetTime();
 
 		/// <summary>

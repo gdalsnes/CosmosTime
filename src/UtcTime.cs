@@ -16,14 +16,14 @@ namespace CosmosTime
 		public const string VariableLengthFormatUtcWithoutZ = "yyyy'-'MM'-'ddTHH':'mm':'ss'.'FFFFFFF";
 		public const string VariableLengthFormatUtc = VariableLengthFormatUtcWithoutZ + "Z";
 
-		public static readonly UtcTime MinValue = DateTime.MinValue.ToUtcTime();
+		public static readonly UtcTime MinValue; // = DateTime.MinValue.ToUtcTime();
 		public static readonly UtcTime MaxValue = DateTime.MaxValue.ToUtcTime();
 
 		DateTime _utc;
 
 		public DateTime UtcDateTime => _utc;
 
-		public static UtcTime Now => new UtcTime(DateTime.UtcNow);
+		public static UtcTime Now => DateTime.UtcNow.ToUtcTime();
 
 		/// <summary>
 		/// Fixed length
@@ -103,7 +103,7 @@ namespace CosmosTime
 		public UtcTime AddSeconds(double sec) => _utc.AddSeconds(sec).ToUtcTime();
 		public UtcTime AddMinutes(double min) => _utc.AddMinutes(min).ToUtcTime();
 		public UtcTime AddHours(double h) => _utc.AddHours(h).ToUtcTime();
-		public UtcTime AddDays(double d) => _utc.AddDays(d).ToUtcTime();
+		public UtcTime AddDays(double days) => _utc.AddDays(days).ToUtcTime();
 
 		// kind of both is utc
 		public bool Equals(UtcTime other) => _utc.Equals(other._utc);
@@ -131,7 +131,7 @@ namespace CosmosTime
 
 			// does verify the length, but do it outselfs anyways to be sure
 			var dt = DateTime.ParseExact(utc, FixedLengthFormatUtc, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind /* needed? yes, else kind is wrong*/);
-			return new UtcTime(dt);
+			return dt.ToUtcTime();
 		}
 
 		/// <summary>
@@ -173,7 +173,7 @@ namespace CosmosTime
 			if (DateTime.TryParse(str, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out var dt)
 				&& dt.Kind == DateTimeKind.Utc)
 			{
-				utc = new UtcTime(dt);
+				utc = dt.ToUtcTime();
 				return true;
 			}
 
