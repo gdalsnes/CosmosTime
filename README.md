@@ -87,3 +87,6 @@ https://stackoverflow.com/questions/5839388/formatting-date-in-linq-to-entities-
 
 Datetime fields - ISO vs non-ISO - How does the behaviour of Cosmos DB change? 
 https://github.com/MicrosoftDocs/azure-docs/issues/52598
+
+Do not convert JToken date time string as DateTime (JToken.Parse, DateParseHandling)
+https://stackoverflow.com/questions/33874334/do-not-convert-jtoken-date-time-string-as-datetime
