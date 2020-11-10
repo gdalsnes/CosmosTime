@@ -6,12 +6,45 @@ namespace CosmosTime
 {
 	public static class CosmosTimeHelper
 	{
+
+		/// <summary>
+		/// DateTime must already be UTC
+		/// </summary>
+		/// <param name="dt"></param>
+		/// <returns></returns>
 		public static UtcTime ToUtcTime(this DateTime dt)
+		{
+			return new UtcTime(dt);
+		}
+
+		/// <summary>
+		/// DateTime must already be UTC
+		/// </summary>
+		/// <param name="dt"></param>
+		/// <returns></returns>
+		public static UtcTime? ToUtcTime(this DateTime? dt)
+		{
+			if (dt == null)
+				return null;
+			return new UtcTime(dt.Value);
+		}
+
+		/// <summary>
+		/// Will convert from local to UTC. Should ideally never be used!
+		/// </summary>
+		/// <param name="dt"></param>
+		/// <returns></returns>
+		public static UtcTime LocalToUtcTime(this DateTime dt)
 		{
 			return new UtcTime(dt.ToUniversalTime());
 		}
 
-		public static UtcTime? ToUtcTime(this DateTime? dt)
+		/// <summary>
+		/// Will convert from local to UTC. Should ideally never be used!
+		/// </summary>
+		/// <param name="dt"></param>
+		/// <returns></returns>
+		public static UtcTime? LocalToUtcTime(this DateTime? dt)
 		{
 			if (dt == null)
 				return null;

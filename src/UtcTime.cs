@@ -16,14 +16,22 @@ namespace CosmosTime
 		public const string VariableLengthFormatUtcWithoutZ = "yyyy'-'MM'-'ddTHH':'mm':'ss'.'FFFFFFF";
 		public const string VariableLengthFormatUtc = VariableLengthFormatUtcWithoutZ + "Z";
 
-		public static readonly UtcTime MinValue; // = DateTime.MinValue.ToUtcTime();
-		public static readonly UtcTime MaxValue = DateTime.MaxValue.ToUtcTime();
+		public static readonly UtcTime MinValue = new DateTime(0L, DateTimeKind.Utc).ToUtcTime();
+		/// <summary>
+		/// Seems like a bug in DateTime: 
+		/// DateTime.MaxValue.ToUniversalTime().Ticks				  -> 3155378939999999999 // no...not UTC max (its lower)
+		/// DateTimeOffset.MaxValue.Ticks							  -> 3155378975999999999 // correct
+		/// new DateTime(0x2bca2875f4373fffL, DateTimeKind.Utc).Ticks -> 3155378975999999999 // correct
+		/// </summary>
+		public static readonly UtcTime MaxValue = new DateTime(0x2bca2875f4373fffL, DateTimeKind.Utc).ToUtcTime(); // snatched from DateTime
 
 		DateTime _utc;
 
 		public DateTime UtcDateTime => _utc;
 
 		public static UtcTime Now => DateTime.UtcNow.ToUtcTime();
+
+		public UtcTime Date => _utc.Date.ToUtcTime();
 
 		/// <summary>
 		/// Fixed length
@@ -181,5 +189,34 @@ namespace CosmosTime
 			return false;
 		}
 
+		public double ToOADate()
+		{
+			return _utc.ToOADate();
+		}
+
+		public static UtcTime FromOADate(double d)
+		{
+			return new DateTime(DoubleDateToTicks(d), DateTimeKind.Utc).ToUtcTime();
+		}
+
+		// snatched from DateTime
+		internal static long DoubleDateToTicks(double value)
+		{
+			if ((value >= 2958466.0) || (value <= -657435.0))
+			{
+				throw new ArgumentException(("Arg_OleAutDateInvalid"));
+			}
+			long num = (long)((value * 86400000.0) + ((value >= 0.0) ? 0.5 : -0.5));
+			if (num < 0L)
+			{
+				num -= (num % 0x5265c00L) * 2L;
+			}
+			num += 0x3680b5e1fc00L;
+			if ((num < 0L) || (num >= 0x11efae44cb400L))
+			{
+				throw new ArgumentException(("Arg_OleAutDateScale"));
+			}
+			return (num * 0x2710L);
+		}
 	}
 }
