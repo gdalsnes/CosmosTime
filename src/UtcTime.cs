@@ -61,10 +61,14 @@ namespace CosmosTime
 			return _utc.ToString(VariableLengthFormatUtc, CultureInfo.InvariantCulture);
 		}
 
+		/// <summary>
+		/// DateTime must be Kind.Utc, else will throw
+		/// </summary>
+		/// <param name="utcTime"></param>
 		public UtcTime(DateTime utcTime)
 		{
 			if (utcTime.Kind != DateTimeKind.Utc)
-				throw new Exception("not utc");
+				throw new ArgumentException("not utc");
 
 			_utc = utcTime;
 		}

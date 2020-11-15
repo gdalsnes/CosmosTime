@@ -8,7 +8,7 @@ namespace CosmosTime
 	{
 
 		/// <summary>
-		/// DateTime must already be UTC
+		/// DateTime must be Kind.Utc, else will throw
 		/// </summary>
 		/// <param name="dt"></param>
 		/// <returns></returns>
@@ -18,7 +18,7 @@ namespace CosmosTime
 		}
 
 		/// <summary>
-		/// DateTime must already be UTC
+		/// DateTime must be Kind.Utc, else will throw
 		/// </summary>
 		/// <param name="dt"></param>
 		/// <returns></returns>
@@ -30,7 +30,7 @@ namespace CosmosTime
 		}
 
 		/// <summary>
-		/// Will convert from local to UTC. Should ideally never be used!
+		/// Will convert from local to Utc. Should ideally only be used on a client.
 		/// </summary>
 		/// <param name="dt"></param>
 		/// <returns></returns>
@@ -40,7 +40,7 @@ namespace CosmosTime
 		}
 
 		/// <summary>
-		/// Will convert from local to UTC. Should ideally never be used!
+		/// Will convert from local to Utc. Should ideally only be used on a client.
 		/// </summary>
 		/// <param name="dt"></param>
 		/// <returns></returns>
